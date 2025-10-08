@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 // import java.awt.List; -> Warum ist das falsch?
 import java.util.List;
 import java.util.ArrayList;
@@ -8,17 +9,9 @@ import javax.swing.*;
 
 public class MemoryGameFrame extends JFrame{
 
-    /**
-     * Create the GUI. 
-     * First try
-     */
-
     private int rows;
     private int cols;
     private List<MemoryCard> cards;
-
-    //private TextBased[] card = new TextBased[maxCard];
-    //private ImgBased[] Imgcard = new ImgBased[maxCard];
 
     private int cardStatus = -1;
     private int cardChosen1;
@@ -44,6 +37,28 @@ public class MemoryGameFrame extends JFrame{
 
         //Panel für Karten
         JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(rows, cols));
+
+        // Erzeuge Kartenobjekte in pairs
+        int numPairs = (rows * cols) / 2;
+        for (int pid = 0; pid < numPairs; pid++){
+            // 2 cards with the same pairId
+            MemoryCard c1 = new MemoryCard(pid);
+            MemoryCard c2 = new MemoryCard(pid);
+            cards.add(c1);
+            cards.add(c2);
+        }
+
+        // shuffle cards
+        Collections.shuffle(cards);
+
+        // add Buttons
+        for (MemoryCard card : cards) {
+            JButton btn = card.geButton();
+            boardPanel.add(btn);
+            // here can be placed a ActionListener for later actions
+        }
+
 
         this.add(boardPanel, BorderLayout.CENTER);
 
